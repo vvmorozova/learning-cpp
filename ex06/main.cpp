@@ -14,13 +14,13 @@ void test1()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -36,13 +36,13 @@ void test2()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -58,13 +58,13 @@ void test3()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -80,13 +80,13 @@ void test4()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -102,13 +102,13 @@ void test5()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -124,13 +124,13 @@ void test6()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -146,13 +146,13 @@ void test7()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -168,13 +168,13 @@ void test8()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -190,13 +190,13 @@ void test9()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -212,13 +212,13 @@ void test10()
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << a[i];
+        cout << a[i] << " ";
     }
     cout << endl;
 
     for (unsigned i = 0; i < size; i++)
     {
-        cout << b[i];
+        cout << b[i] << " ";
     }
     cout << '\n' << endl;
 }
@@ -227,39 +227,56 @@ void test10()
 
 void rotater(int a[], unsigned size, int shift)
 {
-    int t, wait = 0, i, j, store, store_i = -1;
+    int t, wait = 0, i, j, store, store_i = -1, keep, flag = 0;
 
+    if (size % 2 != 0 && size / 2 == shift)
+        keep = a[shift - 1];
     for (i = 0; i < shift; i++) {
         for (j = i; j <= size - 1; j += shift) {
+            
             if (j == store_i) {
                 wait = store;
-                continue;
             }
-            if (j != i) {
+            else if (j != i) {
+                // if (flag)
+                //     continue;
                 t = a[j];
                 a[j] = wait;
                 wait = t;
+                // if (j == 2 * shift - 1)
+                //     flag = 1;
             }
             else
                 wait = a[j];
         }
-        store = a[j - size];
         store_i = j -  size;
+        store = a[store_i];
+        // if (flag)
+        //     continue;
         a[store_i] = wait;
+        // if (2 * shift - 1 == store_i)
+        //     flag = 1;
+        for (int i = 0; i < size; i++)
+            printf("%3d ", a[i]);
+        cout << endl;
     }
+    if (size % 2 != 0 && size / 2 == shift)
+        a[size - 2] = keep;
+    // cout << "right";
 }
 
 void rotatel(int a[], unsigned size, int shift)
 {
-    int t, wait = 0, i, j, store, store_i;;
+    int t, wait = 0, i, j, store, store_i, keep;
 
+    if (size % 2 != 0 && size / 2 == shift)
+        keep = a[size - shift];
     for (i = size - 1; i > size - 1 - shift; i--) {
         for (j = i; j >= 0; j -= shift) {
             if (j == store_i) {
                 wait = store;
-                continue;
             }
-            if (j != i) {
+            else if (j != i) {
                 t = a[j];
                 a[j] = wait;
                 wait = t;
@@ -270,14 +287,28 @@ void rotatel(int a[], unsigned size, int shift)
         store = a[size + j];
         store_i = size + j;
         a[store_i] = wait;
+        // cout << store << " store " << store_i << " store_i" << endl;
+        // for (int i = 0; i < size; i++)
+        //     printf("%3d ", a[i]);
+        // cout << endl;
     }
+    if (size % 2 != 0 && size / 2 == shift)
+        a[1] = keep;
+    // cout << "left";
 }
 
 void rotate(int a[], unsigned size, int shift)
 {
+    if (size <= 1)
+        return ;
+    if (shift < 0) {
+        shift = -shift;
+        shift = size % shift;
+
+    }
     if (shift > size)
         shift = shift % size;
-    if (shift < size / 2)
+    if (shift < (size + 1) / 2)
         rotatel(a, size, shift);
     else
         rotater(a, size, size - shift);
@@ -285,7 +316,7 @@ void rotate(int a[], unsigned size, int shift)
 
 int main()
 {
-    int a[] = {1, 2, 3, 4, 5, 6, 7, 8}, size = 8, shift = 3;
+    int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, size = 13, shift = 9;
 
     for (int i = 0; i < size; i++)
         printf("%3d ", a[i]);
@@ -294,15 +325,15 @@ int main()
     for (int i = 0; i < size; i++)
         printf("%3d ", a[i]);
     cout << endl;
-    test1();
-    test2();
-    test3();
-    test4();
-    test5();
-    test6();
-    test7();
-    test8();
-    test9();
-    test10();
+    // test1();
+    // test2();
+    // test3();
+    // test4();
+    // test5();
+    // test6();
+    // test7();
+    // test8();
+    // test9();
+    // test10();
 	return 0;
 }

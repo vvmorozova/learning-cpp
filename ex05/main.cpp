@@ -28,8 +28,14 @@ void rotate(int a[], unsigned size, int shift)
 
 int main()
 {
-    int a[] = {-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6}, size = 16, shift = 17;
+    int a[] = {1, 2, 3, 4, 5}, size = 5, shift = 4;
 
+    for (int i = 0; i < size; i++)
+        printf("%3d ", a[i]);
+    cout << endl;
     rotate(a, size, shift);
+    for (int i = 0; i < size; i++)
+        printf("%3d ", a[i]);
+    cout << endl;
 	return 0;
 }
