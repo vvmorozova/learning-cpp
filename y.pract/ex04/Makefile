@@ -1,4 +1,4 @@
-NAME		=	ex01
+NAME		=	ex04
 SRCS		=	$(wildcard $(SRCS_DIR)/*.cpp)
 SRCS_DIR	=	src
 
@@ -8,14 +8,14 @@ HEADER_DIR	=	inc
 
 CC			=	g++
 
-FLAGS		=	-g  -I $(HEADER_DIR) # -Wall -Werror -Wextra
+FLAGS		=	-g  -I $(HEADER_DIR) -Wall -Werror -Wextra
 
 RM			=	rm -f
 
 OBJ 		=	$(SRCS:$(SRCS_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DIR		=	bin
 
-ARGS		=	-10 10 1999
+ARGS		=	
 all : $(NAME) 
 
 $(NAME) : $(OBJ)

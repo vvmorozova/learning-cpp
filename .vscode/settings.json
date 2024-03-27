@@ -1,0 +1,23 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "fstream": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "*.tcc": "cpp",
+        "unordered_map": "cpp",
+        "array": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "map": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "forward_list": "cpp",
+        "istream": "cpp",
+        "typeinfo": "cpp",
+        "ostream": "cpp",
+        "iterator": "cpp"
+    }
+}

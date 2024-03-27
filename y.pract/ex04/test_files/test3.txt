@@ -1,0 +1,17 @@
+program
+is awesome
+My
+is awful
+
+Down
+Down
+Down
+Down
+Ctrl+X
+Up
+Ctrl+X
+Up
+Up
+Up
+Up
+Ctrl+V
