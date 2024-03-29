@@ -1,0 +1,12 @@
+a
+b
+c
+
+Down
+Down
+Ctrl+X
+Shift
+Up
+Down
+Ctrl+X
+Ctrl+V

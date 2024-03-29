@@ -8,14 +8,14 @@ HEADER_DIR	=	inc
 
 CC			=	g++
 
-FLAGS		=	-g  -I $(HEADER_DIR) -Wall -Werror -Wextra
+FLAGS		=	-g  -I $(HEADER_DIR) #-Wall -Werror -Wextra
 
 RM			=	rm -f
 
 OBJ 		=	$(SRCS:$(SRCS_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DIR		=	bin
 
-ARGS		=	
+ARGS		=	3 4
 all : $(NAME) 
 
 $(NAME) : $(OBJ)

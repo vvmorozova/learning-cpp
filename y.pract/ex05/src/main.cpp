@@ -6,70 +6,154 @@
 #define CTRL_V 3
 #define SHIFT 4
 
-void TextEditor(void)
+void controlX(list<string> &content, list<string> &buffer, bool &shiftIsPressed,
+			  list<string>::iterator &iter, list<string>::iterator &shiftStr,
+			  int &shiftOffset)
 {
-	list<string> content = {};
-	string s, buffer = "";
-	map<string, int> mapping;
-
-	mapping["Down"] = DOWN;
-	mapping["Up"] = UP;
-	mapping["Ctrl+X"] = CTRL_X;
-	mapping["Ctrl+V"] = CTRL_V;
-	mapping["Shift"] = SHIFT;
-
-	while (getline(cin, s) && s != "")
+	cout << "Shift offset " << shiftOffset << endl;
+	if (*iter != "")
 	{
-		content.push_back(s);
-	}
-	s = "";
-	content.push_back(s);
 
+		buffer.erase(buffer.begin(), buffer.end());
+		if (shiftIsPressed && shiftOffset != 0)
+		{
+			if (shiftOffset > 0)
+			{
+				buffer.splice(buffer.begin(), content, shiftStr, next(shiftStr, shiftOffset));
+			}
+			else
+			{
+				buffer.splice(buffer.begin(), content, prev(shiftStr, shiftOffset), shiftStr);
+				iter = shiftStr;
+			}
+		}
+		else
+			buffer.splice(buffer.begin(), content, iter);
+	}
+
+	shiftIsPressed = false;
+	shiftOffset = 0;
+}
+
+void controlV(list<string> &content, list<string> &buffer, bool &shiftIsPressed,
+			  list<string>::iterator &iter, list<string>::iterator &shiftStr,
+			  int &shiftOffset)
+{
+	cout << "HERE-1" << endl;
+	if (buffer.size())
+	{
+		if (shiftIsPressed && shiftOffset != 0)
+		{
+			cout << "HERE0" << endl;
+			if (shiftOffset > 0)
+			{
+				iter = content.erase(shiftStr, next(shiftStr, shiftOffset));
+			}
+			else
+			{
+				iter = content.erase(prev(shiftStr, shiftOffset), shiftStr);
+			}
+			cout << "HERE1" << endl;
+			content.splice(iter, buffer);
+		}
+		else
+		{
+			cout << "HERE2" << endl;
+			content.splice(iter, buffer);
+		}
+	}
+	shiftIsPressed = false;
+	shiftOffset = 0;
+}
+
+void moveUp(list<string> &content, list<string>::iterator &iter,
+			bool shiftIsPressed, list<string>::iterator &shiftStr,
+			int &shiftOffset)
+{
+	cout << "ITER UP" << endl;
+	if (iter != content.begin())
+	{
+		if (shiftIsPressed)
+			shiftOffset--;
+		iter--;
+	}
+}
+
+void moveDown(list<string>::iterator &iter, list<string> &content,
+			  bool shiftIsPressed, int &shiftOffset)
+{
+	if (*iter != "")
+	{
+		if (shiftIsPressed)
+			shiftOffset++;
+		iter++;
+	}
+}
+
+void editFile(list<string> &content, ifstream &test_file,
+			  map<string, int> mapping)
+{
+	list<string> buffer = {};
+	list<string>::iterator shiftStr;
+	int shiftOffset = 0; // -1 - не задано, 0 - вниз, 1 - вверх;
+	bool shiftIsPressed = false;
+	string s;
 	auto iter = content.begin();
-	while (getline(cin, s))
+
+	while (getline(test_file, s))
 	{
 		switch (mapping[s])
 		{
 		case DOWN:
-			if (*iter != "")
-				iter++;
+		{
+			cout << "|DOWN|" << endl;
+			moveDown(iter, content, shiftIsPressed, shiftOffset);
+			print_list(content, "CONTENT");
 			break;
+		}
 		case UP:
-			if (iter != content.begin())
-				iter--;
+		{
+			cout << "|UP|" << endl;
+			moveUp(content, iter, shiftIsPressed, shiftStr, shiftOffset);
+			print_list(content, "CONTENT");
 			break;
+		}
 		case CTRL_X:
-			if (iter != content.end() && *iter != "")
-			{
-				buffer = move(*iter);
-				iter = content.erase(iter);
-			}
+		{
+			cout << "|CTRL_X|" << endl;
+			controlX(content, buffer, shiftIsPressed, iter, shiftStr, shiftOffset);
+			print_list(content, "CONTENT");
+
 			break;
+		}
 		case CTRL_V:
-			content.insert(iter, buffer);
+		{
+			cout << "|CTRL_V|" << endl;
+			controlV(content, buffer, shiftIsPressed, iter, shiftStr, shiftOffset);
+			print_list(content, "CONTENT");
 			break;
+		}
 		case SHIFT:
-			content.insert(iter, buffer);
+		{
+			cout << "|SHIFT|" << endl;
+			cout << "ITER " << *iter << endl;
+			print_list(content, "CONTENT");
+			shiftIsPressed = true;
+			shiftStr = iter;
 			break;
+		}
 		default:
 			break;
 		}
 	}
-	for (auto it = content.begin(); it != content.end(); ++it)
-	{
-		cout << *it << endl;
-	}
 }
 
-void TextEditor_test(string filename)
+bool TextEditor_test(string filename, string reference)
 {
 	ifstream test_file;
-	deque<string> content = {};
-	string s, buffer = "";
+	list<string> content = {};
+	string s;
 	map<string, int> mapping;
-	bool shiftIsPressed = false;
-	int firstSelected = -1;
-	int shift, currentIndex;
 
 	mapping["Down"] = DOWN;
 	mapping["Up"] = UP;
@@ -86,90 +170,81 @@ void TextEditor_test(string filename)
 	s = "";
 	content.push_back(s);
 
-	for (auto it = content.begin(); it != content.end(); ++it)
-	{
-		cout << *it << endl;
-	}
-	cout << endl;
+	print_list(content, "CONTENT");
 
-	auto iter = content.begin();
-	while (getline(test_file, s))
-	{
-		switch (mapping[s])
-		{
-		case DOWN:
-			cout << "DOWN" << endl;
-			if (*iter != "")
-				iter++;
-			break;
-		case UP:
-			cout << "UP" << endl;
-			if (iter != content.begin())
-				iter--;
-			break;
-		case CTRL_X:
-			cout << "CTRL_X" << endl;
-			if (iter != content.end() && *iter != "")
-			{
-				cout << "*ITER"
-					 << " " << *iter << endl;
-				if (shiftIsPressed)
-				{
-
-					currentIndex = distance(content.begin(), iter);
-					if (firstSelected > currentIndex)
-						shift = firstSelected - currentIndex;
-					else
-						shift = currentIndex - firstSelected;
-					iter = content.erase(iter, iter + shift);
-				}
-				else
-				{
-					buffer = std::move(*iter);
-					iter = content.erase(iter);
-				}
-			}
-			break;
-		case CTRL_V:
-			cout << "CTRL_V" << endl;
-			if (buffer != "")
-				content.insert(iter, buffer);
-			break;
-		case SHIFT:
-			shiftIsPressed = true;
-			firstSelected = distance(content.begin(), iter);
-			break;
-		default:
-			break;
-		}
-		cout << "BUFFER"
-			 << " " << buffer << endl;
-	}
-	cout << "-----------------" << endl;
-	for (auto it = content.begin(); it != content.end(); ++it)
-	{
-		cout << *it << endl;
-	}
-	cout << "-----------------" << endl;
+	editFile(content, test_file, mapping);
+	return print_to_file_and_compare(content, reference);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	cout << "TEST 1" << endl;
-	TextEditor_test("test_files/test1.txt");
+	int minTest = (argc > 1 ? stoi(argv[1]) : 3), maxTest = (argc > 1 ? stoi(argv[2]) : 5);
+	string inputPath = "test_files/input/", outputPath = "test_files/output/";
+	vector<bool> test_rez = {};
+	for (int i = minTest; i < maxTest; i++)
+	{
+		cout << "TEST " << i << endl;
+		bool rez = TextEditor_test(inputPath + "test" + to_string(i) + ".txt",
+								   outputPath + "test" + to_string(i) + ".txt");
+		test_rez.push_back(rez);
+	}
+	for (int i = 0; i < test_rez.size(); i++)
+	{
+		cout << "TEST " << i + minTest << (test_rez[i] ? " OK" : " FAIL") << endl;
+	}
+}
 
-	cout << "TEST 2" << endl;
-	TextEditor_test("test_files/test2.txt");
+bool print_to_file_and_compare(list<string> toPrint, string reference)
+{
+	ifstream out_file;
+	string s, err_s = "", err_s_file = "";
+	bool was_error = false;
 
-	cout << "TEST 3" << endl;
-	TextEditor_test("test_files/test3.txt");
+	out_file.open(reference);
 
-	cout << "TEST 4" << endl;
-	TextEditor_test("test_files/test4.txt");
+	for (auto it = toPrint.begin(); *it != ""; ++it)
+	{
+		cout << *it << endl;
+		getline(out_file, s);
+		if ((*it != s))
+		{
+			was_error = true;
+			err_s = *it;
+			err_s_file = s;
+		}
+	}
+	if (was_error)
+	{
+		for (int i = 0; i < 20; i++)
+			cout << "!";
+		cout << endl;
+		cout << "TEST FAILED" << endl;
+		cout << err_s << endl;
+		for (int i = 0; i < 20; i++)
+			cout << "!";
+		cout << endl;
+	}
+	else
+	{
+		for (int i = 0; i < 20; i++)
+			cout << "*";
+		cout << endl;
+		cout << "TEST OK" << endl;
+		cout << err_s << endl;
+		for (int i = 0; i < 20; i++)
+			cout << "*";
+		cout << endl;
+	}
+	return !was_error;
+}
 
-	cout << "TEST 5" << endl;
-	TextEditor_test("test_files/test5.txt");
-
-	cout << "TEST 6" << endl;
-	TextEditor_test("test_files/test6.txt");
+void print_list(list<string> toPrint, string msg)
+{
+	cout << msg << endl;
+	cout << "-----------------" << endl;
+	for (auto it = toPrint.begin(); it != toPrint.end(); it++)
+	{
+		cout << *it << endl;
+	}
+	cout << "-----------------" << endl;
 }
