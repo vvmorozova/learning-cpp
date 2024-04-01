@@ -1,4 +1,4 @@
-NAME		=	ex05
+NAME		=	ex03
 SRCS		=	$(wildcard $(SRCS_DIR)/*.cpp)
 SRCS_DIR	=	src
 
@@ -15,7 +15,7 @@ RM			=	rm -f
 OBJ 		=	$(SRCS:$(SRCS_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DIR		=	bin
 
-ARGS		=	1 6
+ARGS		=	1 3
 all : $(NAME) 
 
 $(NAME) : $(OBJ)

@@ -10,25 +10,31 @@ void controlX(list<string> &content, list<string> &buffer, bool &shiftIsPressed,
 			  list<string>::iterator &iter, list<string>::iterator &shiftStr,
 			  int &shiftOffset)
 {
-	cout << "Shift offset " << shiftOffset << endl;
+	cout << "Shift offset hehe " << shiftOffset << endl;
 	if (*iter != "")
 	{
 
 		buffer.erase(buffer.begin(), buffer.end());
 		if (shiftIsPressed && shiftOffset != 0)
 		{
+			cout << " offset !!! 0" << endl;
 			if (shiftOffset > 0)
 			{
-				buffer.splice(buffer.begin(), content, shiftStr, next(shiftStr, shiftOffset));
+				buffer.splice(buffer.begin(), content, shiftStr, iter);
 			}
 			else
 			{
-				buffer.splice(buffer.begin(), content, prev(shiftStr, shiftOffset), shiftStr);
+				buffer.splice(buffer.begin(), content, iter, shiftStr);
 				iter = shiftStr;
 			}
 		}
 		else
-			buffer.splice(buffer.begin(), content, iter);
+		{
+			cout << " offset == 0" << endl;
+			auto toSplice = iter;
+			iter = std::next(iter);
+			buffer.splice(buffer.begin(), content, toSplice);
+		}
 	}
 
 	shiftIsPressed = false;
@@ -107,6 +113,7 @@ void editFile(list<string> &content, ifstream &test_file,
 		case DOWN:
 		{
 			cout << "|DOWN|" << endl;
+			cout << "iter " << *iter << endl;
 			moveDown(iter, content, shiftIsPressed, shiftOffset);
 			print_list(content, "CONTENT");
 			break;
