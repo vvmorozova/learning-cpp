@@ -1,10 +1,2 @@
-/
-/bin/
-/home/
-/home/guest/
-/home/guest/homework/
-/home/guest/homework/A/
-/root/
-/root/tests/
-/usr/
-/usr/bin/
+7
+2 4 5 6 10 10 10

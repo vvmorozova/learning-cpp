@@ -1,14 +1,4 @@
-program
-is awesome
-My
-is awful
-
-Down
-Down
-Down
-Ctrl+X
-Up
-Ctrl+X
-Up
-Up
-Ctrl+V
+10
+1 2 3 3 3 5 7 10 10 10
+5
+1 3 3 5 7

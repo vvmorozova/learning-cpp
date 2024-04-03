@@ -1,6 +1,4 @@
-/home/guest/homework/A/main.cpp
-/root/test.cpp
-/root/tests/01
-/root/tests/01.a
-/bin/bash
-/usr/bin/perl
+10
+1 2 3 3 4 5 7 10 10 10
+5
+1 3 3 6 7

@@ -1,9 +1,2 @@
-My
-program
-
-Down
-Down
-Down
-Down
-Ctrl+X
-Ctrl+V
+0
+0
