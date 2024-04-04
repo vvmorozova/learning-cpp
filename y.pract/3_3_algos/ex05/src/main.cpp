@@ -1,6 +1,6 @@
 #include "ex05.h"
 template <typename T, class OutputIt>
-void PrintResults(std::vector::iterator <T> filtered, OutputIt filteredLast)
+void PrintResults(vector<T>::iterator filtered, OutputIt filteredLast)
 {
 	cout << "iter" << endl;
 	for (auto iter = filtered.begin(); iter != filtered.end(); iter++)
@@ -14,10 +14,10 @@ void Process(const std::vector<T> &data)
 {
 	std::vector<T> filtered;
 
-	auto filteredLast = std::copy_if(
+	std::copy_if(
 		data.begin(),
 		data.end(),
-		filtered.begin(),
+		std::back_inserter(filtered),
 		[](const T &x)
 		{ return x > 0; });
 
