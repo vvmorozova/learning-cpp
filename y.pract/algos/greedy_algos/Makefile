@@ -15,7 +15,7 @@ RM			=	rm -f
 OBJ 		=	$(SRCS:$(SRCS_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DIR		=	bin
 
-ARGS		=	1 2
+ARGS		=	1 18
 all : $(NAME) 
 
 $(NAME) : $(OBJ)
