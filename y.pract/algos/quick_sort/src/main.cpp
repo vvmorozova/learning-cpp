@@ -2,30 +2,24 @@
 
 int lomuto_splitting(vector<int> &list, int left, int right)
 {
-	vector<int> listLess, listMore;
+	int index = left + rand() % (right - left + 1);
+	int pivot = list[index];
+	swap(list[index], list[right]);
+	index = right;
+	int i = left - 1;
 
-	int index = left + rand() % (right - left + 1), pivot = list[index];
-
-	for (int j = left; j <= right; j++)
+	for (int j = left; j < right; ++j)
 	{
 		if (list[j] <= pivot)
 		{
-			listLess.push_back(list[j]);
-			if (list[j] == pivot)
-				index = listLess.size() - 1;
-		}
-		else
-		{
-			listMore.push_back(list[j]);
+			++i;
+			swap(list[i], list[j]);
 		}
 	}
 	// index = listLess.size() + left;
-	list.erase(next(list.begin(), left), next(list.begin(), right + 1));
-	swap(listLess[index], listLess[listLess.size()  - 1]);
-	list.insert(next(list.begin(), left), listLess.begin(), listLess.end());
-	list.insert(next(list.begin(), left + listLess.size()), listMore.begin(), listMore.end());
+	swap(list[i + 1], list[index]);
 
-	return left + listLess.size() - 1;
+	return i+1;
 }
 
 void quick_sort(vector<int> &list, int left, int right)
