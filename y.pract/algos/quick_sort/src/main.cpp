@@ -4,26 +4,28 @@ int lomuto_splitting(vector<int> &list, int left, int right)
 {
 	vector<int> listLess, listMore;
 
-	int pivot = list[left], index;
+	int index = left + rand() % (right - left + 1), pivot = list[index];
 
-	for (int j = left + 1; j <= right; j++)
+	for (int j = left; j <= right; j++)
 	{
 		if (list[j] <= pivot)
 		{
 			listLess.push_back(list[j]);
+			if (list[j] == pivot)
+				index = listLess.size() - 1;
 		}
 		else
 		{
 			listMore.push_back(list[j]);
 		}
 	}
-	index = listLess.size() + left;
-	list.erase(next(list.begin(), left + 1), next(list.begin(), right + 1));
-	list.insert(next(list.begin(), left + 1), listLess.begin(), listLess.end());
-	swap(list[left], list[listLess.size() + left]);
-	list.insert(next(list.begin(), left + 1 + listLess.size()), listMore.begin(), listMore.end());
+	// index = listLess.size() + left;
+	list.erase(next(list.begin(), left), next(list.begin(), right + 1));
+	swap(listLess[index], listLess[listLess.size()  - 1]);
+	list.insert(next(list.begin(), left), listLess.begin(), listLess.end());
+	list.insert(next(list.begin(), left + listLess.size()), listMore.begin(), listMore.end());
 
-	return index;
+	return left + listLess.size() - 1;
 }
 
 void quick_sort(vector<int> &list, int left, int right)
